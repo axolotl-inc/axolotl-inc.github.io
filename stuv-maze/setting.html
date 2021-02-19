@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Settings</title>
+    <link rel='stylesheet' href="styles.css">
+    <link rel='icon' type='image/png' href='images/uum.png'>
+</head>
+
+<body>
+    <button id="BACKbtn" onclick="document.location='index.html'">« back</button>
+    <div class="main">
+        <div id="title">Settings</div>
+        <br>
+        <div>Stuv:</div>
+        <select name="stuv" id="stuv">
+            <option value="uum">uum</option>
+            <option value="ill">Illy</option>
+            <option value="cod">Cwoody</option>
+            <option value="dig">Diggy</option>
+            <option value="pog">Pogger</option>
+        </select>
+        <br>
+        <div>Controls:</div>
+        <select id="controls">
+            <option value="wasd">WASD</option>
+            <option value="arrow">Arrow keys</option>
+            <option value="mobile">Mobile</option>
+        </select>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <button onclick='clearStorage()'>Clear data</button>
+    </div>
+
+    <script>
+        var stuv = document.getElementById('stuv').value;
+        var controls = document.getElementById('controls').value;
+
+        setInterval(function() {
+            stuv = document.getElementById('stuv').value;
+            controls = document.getElementById('controls').value;
+            localStorage.setItem("stuv", stuv);
+            localStorage.setItem("controls", controls);
+        }, 10);
+
+        function clearStorage() {
+            localStorage.clear();
+        }
+    </script>
+</body>
+
+</html>

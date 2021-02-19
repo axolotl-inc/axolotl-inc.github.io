@@ -1,0 +1,75 @@
+@font-face {
+    font-family: 'Minecraft';
+    src: url(font.woff)
+}
+
+body {
+    margin: 0;
+    background-image: url(images/background.jpg);
+    background-size: auto;
+}
+
+.main {
+    background-color: gray;
+    font-family: Minecraft;
+    width: 40%;
+    text-align: center;
+    display: table;
+    margin: 0 auto;
+    opacity: 0.85;
+    padding: 10px;
+}
+
+.text {
+    font-size: 20px;
+    text-align: left;
+}
+
+#title {
+    font-size: 40px;
+}
+
+#changelog {
+    font-size: 20px;
+}
+
+#BACKbtn {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+
+select {
+    font-family: Minecraft;
+    background-color: none;
+    border: 2px solid red;
+}
+
+select:hover {
+    background-color: yellow;
+}
+
+button {
+    background-color: none;
+    font-family: Minecraft;
+    padding: 10px;
+    border: 2px solid red;
+}
+
+button:hover {
+    background-color: yellow;
+}
+
+pre {
+    font-family: 'Minecraft';
+    font-size: 12px;
+}
+
+ul {
+    list-style-image: url('images/illy(30by30).png');
+}
+
+a {
+    color: blue;
+    text-decoration: none;
+}

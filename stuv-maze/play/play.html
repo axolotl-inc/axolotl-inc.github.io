@@ -1,0 +1,35 @@
+<!DOCTYPE>
+<html>
+
+<head>
+
+    <title>Stuv maze</title>
+    <link rel='stylesheet' href="play.css">
+    <link rel='icon' type='image/png' href='images/uum.png'>
+
+</head>
+
+<body>
+    <canvas id="canvas" width="100" height="100" style="z-index: 0"></canvas>
+    <canvas id="canvasOTHER" width="100" height="100" style="z-index: 1"></canvas>
+
+    <div class="info" id="info">
+        <div id="title" style="font-size: 40px;">Stuv maze</div>
+        <div id="description" style="font-size: 20px;">I for debug.</div>
+        <div id="level" style="font-size: 20px;">level: 1</div>
+        <pre id="moreInfo"></pre>
+        <button onclick="document.location='../index.html'">« back</button>
+    </div>
+    <div class="win">
+        <div id="win"></div>
+        <img id="uum" src="" width=0 height=0></img>
+    </div>
+    <div class="mobileControls">
+        <img id="mobileBack" src="images/MobileControlsBack.png" width=250 height="250">
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+    <script src="play.js"></script>
+</body>
+
+</html>
