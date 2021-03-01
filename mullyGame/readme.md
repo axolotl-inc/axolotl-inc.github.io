@@ -1,3 +1,0 @@
-# MULLY GAME
-
-cot booly
