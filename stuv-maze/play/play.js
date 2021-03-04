@@ -27,7 +27,7 @@ if (controls == "arrow") {
   var down = "ArrowDown";
 }
 if (controls == "mobile") {
-  
+  document.getElementById("mobileBack").style.left = canvas.width - 200;
 } else {
   document.getElementById("mobileBack").style.display = "none";
 }
