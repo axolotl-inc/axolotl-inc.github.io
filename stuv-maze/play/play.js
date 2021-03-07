@@ -27,9 +27,20 @@ if (controls == "arrow") {
   var down = "ArrowDown";
 }
 if (controls == "mobile") {
-  document.getElementById("mobileBack").style.left = canvas.width - 200;
+  var mobileControls = $(".mobileControls");
+  var topPog = canvas.height - canvas.width / 7;
+  var leftPog = canvas.width - canvas.width / 7;
+
+  mobileControls.css({
+    top: topPog,
+    left: leftPog
+  });
 } else {
-  document.getElementById("mobileBack").style.display = "none";
+  var mobileControls = $(".mobileControls");
+
+  mobileControls.css({
+    display: "none"
+  });
 }
 var x = canvas.width / 2;
 var y = canvas.height / 2 + canvas.height / 4;
@@ -688,7 +699,14 @@ document.addEventListener("keyup", sendKeyUp);
 //main loop:
 var mainLoop = setInterval(function () {
   if (controls == "mobile") {
-    //to be contuidssesdfsydgufkiloalysgbflv7w9ildegfve7dotgbga87wg
+    var mobileControls = $(".mobileControls");
+    var topPog = canvas.height - canvas.width / 7;
+    var leftPog = canvas.width - canvas.width / 7;
+
+    mobileControls.css({
+      top: topPog,
+      left: leftPog
+    });
   }
 
   if (level == 4 && stuv != "pog") {
