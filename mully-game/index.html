@@ -152,19 +152,20 @@
       var pov = 0;
       function switchView(event) {
         var c = event.code;
-        if (c == "KeyV")
+        if (c == "KeyV") {
           if (pov < 2) {
             pov = 0;
           }
-        if (pov === 0) {
-          camera.rotation.y = 0;
-          camera.position.z = 0;
-        } else if (pov === 1) {
-          camera.rotation.y = 0;
-          camera.position.z = -500;
-        } else if (pov === 2) {
-          camera.rotaion.y = 3.14;
-          camera.position.z = 500;
+          if (pov === 0) {
+            camera.rotation.y = 0;
+            camera.position.z = 0;
+          } else if (pov === 1) {
+            camera.rotation.y = 0;
+            camera.position.z = -500;
+          } else if (pov === 2) {
+            camera.rotaion.y = 3.14;
+            camera.position.z = 500;
+          }
         }
       }
 
