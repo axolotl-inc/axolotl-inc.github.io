@@ -28,7 +28,6 @@
     <script src="https://www.code3dgames.com/three.js"></script>
     <script>
       // The "scene" is where stuff in our game will happen:
-      var pov = 0;
       var scene = new THREE.Scene();
       var flat = { flatShading: true };
       var light = new THREE.AmbientLight("white", 0.8);
@@ -150,25 +149,18 @@
 
         if (c == "KeyF") flip = !flip;
 
-        if (event.code == "KeyV") {
-          if (pov === 3) {
-            pov = 0;
-          }
-          if (pov === 0) {
-            camera.rotation.y = 0;
-            camera.position.z = 0;
-          }
-          if (pov === 1) {
-            camera.rotation.y = 0;
-            camera.position.z = -500;
-          }
-          if (pov === 2) {
-            camera.rotaion.y = 3.14;
-            camera.position.z = 500;
-          }
-          pov++;
+        if (c == "Key1") {
+          camera.position.z = 0;
+          camera.rotation.y = 0;
         }
-      }
+        if (c == "Key2") {
+          camera.position.z = 500;
+          camera.rotation.y = 3.14;
+        }
+        if (c == "key3") {
+          camera.position.z = -500;
+          camera.rotation.y = 0;
+        }
 
       document.addEventListener("keydown", sendKeyDown);
       var flip = false;
