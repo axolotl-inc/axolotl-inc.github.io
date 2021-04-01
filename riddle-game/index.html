@@ -1,66 +1,28 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>Riddle Game</title>
-    <style>
-        button {
-            background-color: orange;
-            border: none;
-            color: black;
-            padding: 12px 24px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 0px 0px;
-            cursor: pointer;
-        }
-        
-        input[type=text] {
-            border: none;
-            border-bottom: 2px solid orange;
-            width: 22%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            box-sizing: border-box;
-            background-color: white;
-            transition: width 0.4s ease-in-out;
-        }
-        
-        input[type=text]:focus {
-            width: 50%;
-            background-color: orange;
-            color: black;
-        }
-        
-        .all {
-            font-family: Verdana, Helvetica, sans-serif;
-            color: orange;
-        }
-        
-        body {
-            padding: 10px;
-            border: 2px solid orange;
-            width: 750px;
-            position: absolute;
-            left: 300;
-            top: 300;
-        }
-    </style>
-</head>
+    <link rel="stylesheet" href="index.css" />
+  </head>
 
-<body id="body">
-
+  <body id="body">
     <h1 class="all">Riddle Game</h1>
     <p class="all" id="qDisplay">The Question Will Apear Here</p>
-    <input class="all" type="text" id="in" placeholder="Put answer here">
-    <button style="font-family: Verdana, Helvetica, sans-serif" onclick="getQ()">Random Riddle</button>
-    <button style="font-family: Verdana, Helvetica, sans-serif" onclick="askQ()">Try Answer</button>
+    <input class="all" type="text" id="in" placeholder="Put answer here" />
+    <button
+      style="font-family: Verdana, Helvetica, sans-serif;"
+      onclick="getQ()"
+    >
+      Random Riddle
+    </button>
+    <button
+      style="font-family: Verdana, Helvetica, sans-serif;"
+      onclick="askQ()"
+    >
+      Try Answer
+    </button>
     <p class="all" id="qRespond"></p>
 
-
-
     <script src="index.js"></script>
-</body>
-</html
+  </body>
+</html>
