@@ -1,0 +1,11 @@
+.main {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+#input {
+  background-color: white;
+  border: none;
+  color: black;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
