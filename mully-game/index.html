@@ -14,17 +14,34 @@
       body {
         margin: 0;
       }
+      #title {
+        font-size: 40px;
+      }
+      .main {
+        font-size: 20px;
+      }
+      button {
+        background-color: none;
+        font-family: Minecraft;
+        padding: 10px;
+        border: 2px solid red;
+      }
+
+      button:hover {
+        background-color: yellow;
+      }
     </style>
   </head>
 
   <body>
     <div class="main">
-      <div style="font-size: 40px;">Milly Game!</div>
-      <div style="font-size: 20px;">
+      <div id="title">Milly Game!</div>
+      <div class="main">
         Use arrow keys and WASD to move around
-      </div>
-      <div style="font-size: 20px;">
-        Use digits 1, 2, & 3 to change POV
+        <br/>
+        Use digits 1, 2, & 3  to change POV
+        <br/>
+        <button onclick="document.location='../index.html'">« back</button>
       </div>
     </div>
 

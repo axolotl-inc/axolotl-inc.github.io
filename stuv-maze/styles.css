@@ -22,7 +22,11 @@ body {
 
 .text {
     font-size: 20px;
-    text-align: left;
+    text-align: center;
+}
+
+.head {
+    font-size: 30px;
 }
 
 #title {

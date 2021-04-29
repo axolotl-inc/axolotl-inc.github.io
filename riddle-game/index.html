@@ -5,23 +5,26 @@
     <link rel="stylesheet" href="index.css" />
   </head>
 
-  <body id="body">
-    <h1 class="all">Riddle Game</h1>
-    <p class="all" id="qDisplay">The Question Will Apear Here</p>
-    <input class="all" type="text" id="in" placeholder="Put answer here" />
-    <button
-      style="font-family: Verdana, Helvetica, sans-serif;"
-      onclick="getQ()"
-    >
-      Random Riddle
-    </button>
-    <button
-      style="font-family: Verdana, Helvetica, sans-serif;"
-      onclick="askQ()"
-    >
-      Try Answer
-    </button>
-    <p class="all" id="qRespond"></p>
+  <body>
+    <div class="body">
+      <h1 class="all">Riddle Game</h1>
+      <p class="all" id="qDisplay">Your Riddle Will Apear Here:</p>
+      <input class="all" type="text" id="in" placeholder="Put answer here" />
+      <button
+        style="font-family: Verdana, Helvetica, sans-serif;"
+        onclick="getQ()"
+      >
+        Random Riddle
+      </button>
+      <button
+        style="font-family: Verdana, Helvetica, sans-serif;"
+        onclick="askQ()"
+      >
+        Try Answer
+      </button>
+      <button style="font-family: Verdana, Helvetica, sans-serif;" onclick="document.location='../index.html'">« back</button>
+      <p class="all" id="qRespond"></p>
+    </div>
 
     <script src="index.js"></script>
   </body>
