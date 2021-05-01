@@ -3,49 +3,22 @@
   <head>
     <title>Mully Game</title>
     <link rel="icon" type="image/png" href="MullyGameFavicon.png" />
-    <style>
-      .main {
-        font-family: "Courier";
-        position: absolute;
-        left: 5px;
-        top: 5px;
-      }
-
-      body {
-        margin: 0;
-      }
-      #title {
-        font-size: 40px;
-      }
-      .main {
-        font-size: 20px;
-      }
-      button {
-        background-color: none;
-        font-family: Minecraft;
-        padding: 10px;
-        border: 2px solid red;
-      }
-
-      button:hover {
-        background-color: yellow;
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body>
+    <div class="title">Milly Game!</div>
     <div class="main">
-      <div id="title">Milly Game!</div>
-      <div class="main">
-        Use arrow keys and WASD to move around
-        <br/>
-        Use digits 1, 2, & 3  to change POV
-        <br/>
-        <button onclick="document.location='../index.html'">« back</button>
-      </div>
+      Use arrow keys and WASD to move around
+      <br/>
+      Use digits 1, 2, & 3  to change POV
+      <br/>
+      <br/>
+      <button onclick="document.location='../index.html'">« BACK</button>
     </div>
 
     <script src="https://www.code3dgames.com/three.js"></script>
     <script src="index.js"></script>
+    
   </body>
 </html>

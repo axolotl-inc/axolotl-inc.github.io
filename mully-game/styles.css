@@ -1,0 +1,31 @@
+.main {
+    font-family: Courier;
+    position: absolute;
+    left: 5px;
+    top: 50px;
+    font-size: 20px;
+}
+
+body {
+    margin: 0;
+}
+
+.title {
+    font-size: 40px;
+    font-family: Courier;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+}
+
+button {
+    background-color: none;
+    font-family: Courier;
+    font-size: 15px;
+    padding: 10px;
+    border: 2px solid red;
+}
+
+button:hover {
+    background-color: yellow;
+}
