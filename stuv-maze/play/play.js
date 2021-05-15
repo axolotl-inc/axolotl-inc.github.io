@@ -1,403 +1,654 @@
-//setup variables:
+//OOP in dev:
+
+class Game {
+  constructor() {
+    this.speed = 1;
+    this.level = 1;
+    this.showDebug = false;
+    this.stuv = localStorage.getItem("stuv");
+    this.controls = localStorage.getItem("controls");
+    this.CANVAS_OTHER = document.getElementById("CANVAS_OTHER");
+    this.CTX_OTHER = CANVAS_OTHER.getContext("2d");
+    this.CANVAS_OTHER.height = window.innerHeight;
+    this.CANVAS_OTHER.width = window.innerWidth;
+    this.CANVAS = document.getElementById("CANVAS");
+    this.CTX = CANVAS.getContext("2d");
+    this.stuv = new Stuv(this);
+      this.walls = new Walls(this);
+    if (this.controls == "wasd") {
+      this.up = "KeyW";
+      this.left = "KeyD";
+      this.right = "KeyA";
+      this.down = "KeyS";
+    }
+    else if (this.controls == "arrow") {
+      this.up = "ArrowUp";
+      this.left = "ArrowRight";
+      this.right = "ArrowLeft";
+      this.down = "ArrowDown";
+    }
+    
+    document.addEventListener("keydown", this.stuv.sendKeyDown);
+    document.addEventListener("keyup", this.stuv.sendKeyUp);
+    this.mainLoop = setInterval( () => {
+
+      if (this.level == 4 && this.stuv != "pog") {
+        this.speed = 7;
+      } else if (this.level == 5 && this.stuv != "pog") {
+        this.speed = 13;
+      }
+    
+      this.CANVAS.height = window.innerHeight;
+      this.CANVAS.width = window.innerWidth;
+      this.CANVAS_OTHER.height = window.innerHeight;
+      this.CANVAS_OTHER.width = window.innerWidth;
+    
+      this.drawBackground();
+      this.walls.drawMazeBorders();
+      drawStuv(x, y);
+      testLevel();
+      if (stuv != "pog") {
+        testCollide();
+      }
+      debug();
+      drawInfo();
+    }, 30);
+  }
+  circle(x, y, radius, isFilled, fillColor, outlineColor) {
+    this.CTX_OTHER.strokeStyle = outlineColor;
+    this.CTX_OTHER.fillStyle = fillColor;
+    this.CTX_OTHER.beginPath();
+    this.CTX_OTHER.arc(x, y, radius, 0, Math.PI * 2, false);
+    if (isFilled) {
+      this.CTX_OTHER.fill();
+    } else {
+      this.CTX_OTHER.stroke();
+    }
+  }
+  drawBackground() {
+    this.CTX.fillStyle = "yellow";
+    this.CTX.fillRect(0, 0, this.CANVAS.width, this.CANVAS.height);
+  }
+
+  drawWin() {
+    document.getElementById("win").textContent = "You Win!";
+    document.getElementById("uum").src = "images/uum.png";
+    document.getElementById("uum").height = 200;
+    document.getElementById("uum").width = 250;
+  };
+
+  drawInfo() {
+    document.getElementById("level").textContent = "Level: " + this.level;
+  };
+  
+}
+
+class Stuv {
+  constructor(game) {
+    this.x = game.CANVAS.width / 2;
+    this.y = game.CANVAS.height / 2 + game.CANVAS.height / 4;
+    this.game = game;
+  }
+  sendKeyDown(event) {
+    var code = event.code;
+    if (code == this.game.left) {
+      this.x += this.game.speed;
+      if (this.game.level != 5 && this.game.level != 4) {
+        speed++;
+      }
+    }
+    if (code == this.game.right) {
+      this.x -= this.game.speed;
+      if (this.game.level != 5 && this.game.level != 4) {
+        speed++;
+      }
+    }
+    if (code == this.game.up) {
+      this.y -= this.game.speed;
+      if (this.game.level != 5 && this.game.level != 4) {
+        speed++;
+      }
+    }
+    if (code == this.game.down) {
+      this.y += this.game.speed;
+      if (this.game.level != 5 && this.game.level != 4) {
+        speed++;
+      }
+    }
+    if (code == "KeyI") {
+      this.game.showDebug = !this.game.showDebug;
+    }
+  };
+  sendKeyUp(event) {
+    var code = event.code;
+    if (code == this.game.right || code == this.game.left || code == up || code == down) speed = 1;
+  };
+  drawUum() {
+    ctx = this.game.CTX_OTHER;
+    canvas = this.game.CANVAS;
+    ctx.lineWidth = 2;
+    this.game.circle(this.x, this.y, canvas.width / 19, true, "#ffb3cf");
+    this.game.circle(this.x - canvas.width / 19, this.y, canvas.width / 19 / 5, true, "#ffb3cf");
+    this.game.circle(this.x + canvas.width / 19, this.y, canvas.width / 19 / 5, true, "#ffb3cf");
+    ctx.fillStyle = "SeaShell";
+    ctx.beginPath();
+    ctx.ellipse(this.x, this.y + canvas.width / 19 / 2, canvas.width / 19 / 1.3, canvas.width / 19 / 1.92, 0, 0, 2 * Math.PI, false);
+    ctx.fill();
+    this.game.circle(this.x - canvas.width / 95, y - canvas.width / 19 / 4, canvas.width / 125.4, true, "black", "black");
+    this.game.circle(this.x + canvas.width / 95, this.y - canvas.width / 19 / 4, canvas.width / 125.4, true, "black", "black");
+  }
+  drawDig() {
+    ctx = this.game.CTX_OTHER;
+    canvas = this.game.CANVAS;
+    ctx.lineWidth = 2;
+    this.game.circle(this.x, this.y, canvas.width / 19, true, "Chocolate", "brown");
+    ctx.fillStyle = "SeaShell";
+    ctx.beginPath();
+    ctx.ellipse(this.x, this.y + canvas.width / 19 / 2, canvas.width / 19 / 1.3, cnvas.width / 19 / 1.92, 0, 0, 2 * Math.PI, false);
+    ctx.fill();
+    this.game.circle(this.x, this.y, canvas.width / 28.5, true, "GoldenRod", "pog");
+    this.game.circle(this.x - canvas.width / 75, this.y - canvas.width / 60, canvas.width / 125.4, true, "black", "black");
+    this.game.circle(this.x + canvas.width / 75, this.y - canvas.width / 60, canvas.width / 125.4, true, "black", "black");
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    ctx.ellipse(this.x, this.y, canvas.width / 80, canvas.width / 120, 0, 0, Math.PI * 2, false);
+    ctx.fill();
+    this.game.circle(this.x, this.y, canvas.width / 240, true, "black", "pog");
+    this.game.circle(this.x - canvas.width / 28, this.y - canvas.width / 22, canvas.width / 62.7, true, "Chocolate", false);
+    this.game.circle(this.x + canvas.width / 28, this.y - canvas.width / 22, canvas.width / 62.7, true, "Chocolate", false);
+  }
+  drawIll() {
+    ctx = this.game.CTX_OTHER;
+    canvas = this.game.CANVAS;
+    ctx.lineWidth = 8;
+    this.game.circle(this.x, this.y, canvas.width / 19, true, "silver");
+    ctx.fillStyle = "SeaShell";
+    ctx.beginPath();
+    ctx.ellipse(this.x, this.y + canvas.width / 19 / 2, canvas.width / 19 / 1.3, canvas.width / 19 / 1.92, 0, 0, 2 * Math.PI, false);
+    ctx.fill();
+    this.game.circle(this.x - canvas.width / 28, this.y - canvas.width / 22, canvas.width / 62.7, true, "pink", false);
+    this.game.circle(this.x + canvas.width / 28, this.y - canvas.width / 22, canvas.width / 62.7, true, "pink", false);
+    this.game.circle(this.x - canvas.width / 28, this.y - canvas.width / 22, canvas.width / 62.7, false, "silver", "silver");
+    this.game.circle(this.x + canvas.width / 28, this.y - canvas.width / 22, canvas.width / 62.7, false, "silver", "silver");
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    ctx.ellipse(this.x, this.y - canvas.height / 48, canvas.width / 120, canvas.width / 180, 0, 0, Math.PI * 2, false);
+    ctx.fill();
+    this.game.circle(this.x - canvas.width / 60, this.y - canvas.width / 60, canvas.width / 140, true, "black", "black");
+    this.game.circle(this.x + canvas.width / 60, this.y - canvas.width / 60, canvas.width / 140, true, "black", "black");
+    this.game.circle(x, y - CANVAS.height / 48, CANVAS.width / 360, true, "black", false);
+  }
+  drawCod() {
+    ctx = this.game.CTX_OTHER;
+    canvas = this.game.CANVAS;
+    ctx.lineWidth = 4;
+    circle(this.x, this.y, canvas.width / 19, true, "SeaShell", false);
+    circle(this.x, this.y - canvas.height / 48, canvas.width / 360, true, "pink", false);
+    ctx.strokeStyle = "black";
+    ctx.beginPath();
+    ctx.arc(this.x - canvas.width / 60, y - canvas.width / 60, canvas.width / 140, 0, Math.PI, true);
+    ctx.moveTo(x + CANVAS.width / 40, y - CANVAS.width / 60);
+    ctx.arc(this.x + CANVAS.width / 60, y - CANVAS.width / 60, CANVAS.width / 140, 0, Math.PI, true);
+    ctx.stroke();
+    ctx.fillStyle = "black";
+    ctx.beginPath();
+    ctx.moveTo(this.x, this.y + canvas.width / 19);
+    ctx.quadraticCurveTo(this.x + canvas.width / 19, this.y + canvas.width / 19, this.x + canvas.width / 19, this.y);
+    ctx.fill();
+    ctx.fillStyle = "#d98238";
+    ctx.beginPath();
+    ctx.moveTo(x, y - canvas.width / 19);
+    ctx.quadraticCurveTo(this.x - canvas.width / 19, this.y - canvas.width / 19, x - CANVAS.width / 19, y);
+    ctx.fill();
+    ctx.fillStyle = "#d98238";
+    ctx.beginPath();
+    ctx.moveTo(this.x - canvas.width / 19, this.y - canvas.width / 76);
+    ctx.lineTo(this.x - canvas.width / 19, this.y - canvas.width / 23.75);
+    ctx.lineTo(this.x - canvas.width / 76, this.y - canvas.width / 23.75);
+    ctx.fill();
+    ctx.fillStyle = "black";
+    ctx.beginPath();
+    ctx.moveTo(this.x + canvas.width / 40, this.y - canvas.width / 60);
+    ctx.lineTo(this.x + canvas.width / 40 + canvas.width / 120, canvas.width / 120);
+    ctx.fill();
+  }
+  draw() {
+    if (this.game.stuv == "uum") {
+      this.drawUum(x, y);
+    }
+    if (this.game.stuv == "dig") {
+      this.drawDig(x, y);
+    }
+    if (this.game.stuv == "cod") {
+      this.drawCod(x, y);
+    }
+    if (this.game.stuv == "ill") {
+      this.drawIll(x, y);
+    }
+    if (this.game.stuv == "pog") {
+      this.circle(this.x, this.y, this.game.CANVAS.width / 19, true, "black", false);
+    }
+  }
+
+  debug() {
+    if (this.game.showDebug) {
+      document.getElementById("moreInfo").textContent =
+        `XY= ${this.x}, ${this.y}\nspeed=${this.game.speed}\nimg: ${this.game.CTX.getImageData(x, y, 1, 1).data.join(", ")}`
+    } else {
+      document.getElementById("moreInfo").textContent = "";
+    }
+  }
+  testLevel() {
+    if (this.y <= 0 && lthis.game.level != (6 || 7)) {
+      this.game.level++;
+      this.y = this.game.CANVAS.height;
+    }
+  
+    if (this.game.level == 6 && this.x <= 0) {
+      this.game.level++;
+      this.x = this.game.CANVAS.width;
+    }
+  
+    if (this.game.level == 7 && this.y >= this.game.CANVAS.height) {
+      this.game.level++;
+      this.y = this.game.CANVAS.height;
+    }
+  
+    if (this.game.level == 8) {
+      this.game.level = "You Win!!";
+      clearInterval(this.game.mainLoop);
+      this.game.drawWin();
+    }
+  };
+}
+
+class Walls {
+  constructor(Game) {
+    this.game = Game;
+  }
+  mazeWidth() {
+    return this.game.CANVAS.width / 16;
+  }
+}
+
+//non OOP:
+
 var speed = 1;
 var level = 1;
 var showDebug = false;
 var stuv = localStorage.getItem("stuv");
 var controls = localStorage.getItem("controls");
-//this canvas, or "canvasOTHER" is for just the stuv:
-const canvasOTHER = document.getElementById("canvasOTHER");
-const ctxOTHER = canvasOTHER.getContext("2d");
-canvasOTHER.height = window.innerHeight;
-canvasOTHER.width = window.innerWidth;
-//this is the canvas for everything else:
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
+const CANVAS_OTHER = document.getElementById("CANVAS_OTHER");
+const CTX_OTHER = CANVAS_OTHER.getContext("2d");
+CANVAS_OTHER.height = window.innerHeight;
+CANVAS_OTHER.width = window.innerWidth;
+const CANVAS = document.getElementById("CANVAS");
+const CTX = CANVAS.getContext("2d");
+CANVAS.height = window.innerHeight;
+CANVAS.width = window.innerWidth;
 if (controls == "wasd") {
   var up = "KeyW";
   var left = "KeyD";
   var right = "KeyA";
   var down = "KeyS";
 }
-if (controls == "arrow") {
+else if (controls == "arrow") {
   var up = "ArrowUp";
   var left = "ArrowRight";
   var right = "ArrowLeft";
   var down = "ArrowDown";
 }
-if (controls == "mobile") {
-  var mobileControls = $(".mobileControls");
-  var topPog = canvas.height - canvas.width / 7;
-  var leftPog = canvas.width - canvas.width / 7;
+var x = CANVAS.width / 2;
+var y = CANVAS.height / 2 + CANVAS.height / 4;
+var finnalX = CANVAS.width / 2;
+var finnalXOther = CANVAS.width / 2;
+var touchX = 0;
+var touchY = 0;
+var touchDirX = 0;
+var touchDirY = 0;
 
-  mobileControls.css({
-    top: topPog,
-    left: leftPog
-  });
-} else {
-  var mobileControls = $(".mobileControls");
 
-  mobileControls.css({
-    display: "none"
-  });
-}
-var x = canvas.width / 2;
-var y = canvas.height / 2 + canvas.height / 4;
-var finnalX = canvas.width / 2;
-var finnalXOther = canvas.width / 2;
-
-//circle function:
+//check
 var circle = function (x, y, radius, isFilled, fillColor, outlineColor) {
-  ctxOTHER.strokeStyle = outlineColor;
-  ctxOTHER.fillStyle = fillColor;
-  ctxOTHER.beginPath();
-  ctxOTHER.arc(x, y, radius, 0, Math.PI * 2, false);
+  CTX_OTHER.strokeStyle = outlineColor;
+  CTX_OTHER.fillStyle = fillColor;
+  CTX_OTHER.beginPath();
+  CTX_OTHER.arc(x, y, radius, 0, Math.PI * 2, false);
   if (isFilled) {
-    ctxOTHER.fill();
+    CTX_OTHER.fill();
   } else {
-    ctxOTHER.stroke();
+    CTX_OTHER.stroke();
   }
 };
-
-//maze border width function:
+//check
 var mazeWidth = function () {
-  return canvas.width / 2 / 2 / 2 / 2;
+  return CANVAS.width / 16;
 };
-
-//background function:
+//check
 var drawBackground = function () {
-  ctx.fillStyle = "yellow";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  CTX.fillStyle = "yellow";
+  CTX.fillRect(0, 0, CANVAS.width, CANVAS.height);
 };
-
-//draw uum function:
+//check
 var drawUum = function (x, y) {
-  ctxOTHER.lineWidth = 2;
+  CTX_OTHER.lineWidth = 2;
   //body:
-  circle(x, y, canvas.width / 19, true, "#ffb3cf");
+  circle(x, y, CANVAS.width / 19, true, "#ffb3cf");
 
   //arms:
-  circle(x - canvas.width / 19, y, canvas.width / 19 / 5, true, "#ffb3cf");
-  circle(x + canvas.width / 19, y, canvas.width / 19 / 5, true, "#ffb3cf");
+  circle(x - CANVAS.width / 19, y, CANVAS.width / 19 / 5, true, "#ffb3cf");
+  circle(x + CANVAS.width / 19, y, CANVAS.width / 19 / 5, true, "#ffb3cf");
 
   //belly:
-  ctxOTHER.fillStyle = "SeaShell";
-  ctxOTHER.beginPath();
-  ctxOTHER.ellipse(
+  CTX_OTHER.fillStyle = "SeaShell";
+  CTX_OTHER.beginPath();
+  CTX_OTHER.ellipse(
     x,
-    y + canvas.width / 19 / 2,
-    canvas.width / 19 / 1.3,
-    canvas.width / 19 / 1.92,
+    y + CANVAS.width / 19 / 2,
+    CANVAS.width / 19 / 1.3,
+    CANVAS.width / 19 / 1.92,
     0,
     0,
     2 * Math.PI,
     false
   );
-  ctxOTHER.fill();
+  CTX_OTHER.fill();
 
   //eyes:
   circle(
-    x - canvas.width / 95,
-    y - canvas.width / 19 / 4,
-    canvas.width / 125.4,
+    x - CANVAS.width / 95,
+    y - CANVAS.width / 19 / 4,
+    CANVAS.width / 125.4,
     true,
     "black",
     "black"
   );
   circle(
-    x + canvas.width / 95,
-    y - canvas.width / 19 / 4,
-    canvas.width / 125.4,
+    x + CANVAS.width / 95,
+    y - CANVAS.width / 19 / 4,
+    CANVAS.width / 125.4,
     true,
     "black",
     "black"
   );
 };
-
-//draw diggy function:
+//check
 var drawDig = function (X, y) {
-  ctxOTHER.lineWidth = 2;
+  CTX_OTHER.lineWidth = 2;
   //body:
-  circle(x, y, canvas.width / 19, true, "Chocolate", "brown");
+  circle(x, y, CANVAS.width / 19, true, "Chocolate", "brown");
 
   //belly:
-  ctxOTHER.fillStyle = "SeaShell";
-  ctxOTHER.beginPath();
-  ctxOTHER.ellipse(
+  CTX_OTHER.fillStyle = "SeaShell";
+  CTX_OTHER.beginPath();
+  CTX_OTHER.ellipse(
     x,
-    y + canvas.width / 19 / 2,
-    canvas.width / 19 / 1.3,
-    canvas.width / 19 / 1.92,
+    y + CANVAS.width / 19 / 2,
+    CANVAS.width / 19 / 1.3,
+    CANVAS.width / 19 / 1.92,
     0,
     0,
     2 * Math.PI,
     false
   );
-  ctxOTHER.fill();
+  CTX_OTHER.fill();
 
   //mane:
-  circle(x, y, canvas.width / 28.5, true, "GoldenRod", "pog");
+  circle(x, y, CANVAS.width / 28.5, true, "GoldenRod", "pog");
 
   //eyes:
   circle(
-    x - canvas.width / 75,
-    y - canvas.width / 60,
-    canvas.width / 125.4,
+    x - CANVAS.width / 75,
+    y - CANVAS.width / 60,
+    CANVAS.width / 125.4,
     true,
     "black",
     "black"
   );
   circle(
-    x + canvas.width / 75,
-    y - canvas.width / 60,
-    canvas.width / 125.4,
+    x + CANVAS.width / 75,
+    y - CANVAS.width / 60,
+    CANVAS.width / 125.4,
     true,
     "black",
     "black"
   );
 
   //snoot:
-  ctxOTHER.fillStyle = "white";
-  ctxOTHER.beginPath();
-  ctxOTHER.ellipse(
+  CTX_OTHER.fillStyle = "white";
+  CTX_OTHER.beginPath();
+  CTX_OTHER.ellipse(
     x,
     y,
-    canvas.width / 80,
-    canvas.width / 120,
+    CANVAS.width / 80,
+    CANVAS.width / 120,
     0,
     0,
     Math.PI * 2,
     false
   );
-  ctxOTHER.fill();
+  CTX_OTHER.fill();
 
   //nose:
-  circle(x, y, canvas.width / 240, true, "black", "pog");
+  circle(x, y, CANVAS.width / 240, true, "black", "pog");
 
   //ears:
   circle(
-    x - canvas.width / 28,
-    y - canvas.width / 22,
-    canvas.width / 62.7,
+    x - CANVAS.width / 28,
+    y - CANVAS.width / 22,
+    CANVAS.width / 62.7,
     true,
     "Chocolate",
     false
   );
   circle(
-    x + canvas.width / 28,
-    y - canvas.width / 22,
-    canvas.width / 62.7,
+    x + CANVAS.width / 28,
+    y - CANVAS.width / 22,
+    CANVAS.width / 62.7,
     true,
     "Chocolate",
     false
   );
 };
-
-//draw illy function:
+//check
 var drawIll = function (x, y) {
-  ctxOTHER.lineWidth = 8;
+  CTX_OTHER.lineWidth = 8;
 
   //body:
-  circle(x, y, canvas.width / 19, true, "silver");
+  circle(x, y, CANVAS.width / 19, true, "silver");
 
   //tume:
-  ctxOTHER.fillStyle = "SeaShell";
-  ctxOTHER.beginPath();
-  ctxOTHER.ellipse(
+  CTX_OTHER.fillStyle = "SeaShell";
+  CTX_OTHER.beginPath();
+  CTX_OTHER.ellipse(
     x,
-    y + canvas.width / 19 / 2,
-    canvas.width / 19 / 1.3,
-    canvas.width / 19 / 1.92,
+    y + CANVAS.width / 19 / 2,
+    CANVAS.width / 19 / 1.3,
+    CANVAS.width / 19 / 1.92,
     0,
     0,
     2 * Math.PI,
     false
   );
-  ctxOTHER.fill();
+  CTX_OTHER.fill();
 
   //uurs:
   circle(
-    x - canvas.width / 28,
-    y - canvas.width / 22,
-    canvas.width / 62.7,
+    x - CANVAS.width / 28,
+    y - CANVAS.width / 22,
+    CANVAS.width / 62.7,
     true,
     "pink",
     false
   );
   circle(
-    x + canvas.width / 28,
-    y - canvas.width / 22,
-    canvas.width / 62.7,
+    x + CANVAS.width / 28,
+    y - CANVAS.width / 22,
+    CANVAS.width / 62.7,
     true,
     "pink",
     false
   );
   circle(
-    x - canvas.width / 28,
-    y - canvas.width / 22,
-    canvas.width / 62.7,
+    x - CANVAS.width / 28,
+    y - CANVAS.width / 22,
+    CANVAS.width / 62.7,
     false,
     "silver",
     "silver"
   );
   circle(
-    x + canvas.width / 28,
-    y - canvas.width / 22,
-    canvas.width / 62.7,
+    x + CANVAS.width / 28,
+    y - CANVAS.width / 22,
+    CANVAS.width / 62.7,
     false,
     "silver",
     "silver"
   );
 
   //snootle:
-  ctxOTHER.fillStyle = "white";
-  ctxOTHER.beginPath();
-  ctxOTHER.ellipse(
+  CTX_OTHER.fillStyle = "white";
+  CTX_OTHER.beginPath();
+  CTX_OTHER.ellipse(
     x,
-    y - canvas.height / 48,
-    canvas.width / 120,
-    canvas.width / 180,
+    y - CANVAS.height / 48,
+    CANVAS.width / 120,
+    CANVAS.width / 180,
     0,
     0,
     Math.PI * 2,
     false
   );
-  ctxOTHER.fill();
+  CTX_OTHER.fill();
 
   //uus:
   circle(
-    x - canvas.width / 60,
-    y - canvas.width / 60,
-    canvas.width / 140,
+    x - CANVAS.width / 60,
+    y - CANVAS.width / 60,
+    CANVAS.width / 140,
     true,
     "black",
     "black"
   );
   circle(
-    x + canvas.width / 60,
-    y - canvas.width / 60,
-    canvas.width / 140,
+    x + CANVAS.width / 60,
+    y - CANVAS.width / 60,
+    CANVAS.width / 140,
     true,
     "black",
     "black"
   );
 
   //nose:
-  circle(x, y - canvas.height / 48, canvas.width / 360, true, "black", false);
+  circle(x, y - CANVAS.height / 48, CANVAS.width / 360, true, "black", false);
 };
-
-//draw CWOOOOOOOOOODY!! function:
+//check
 var drawCod = function (x, y) {
-  ctxOTHER.lineWidth = 4;
+  CTX_OTHER.lineWidth = 4;
 
   //body:
-  circle(x, y, canvas.width / 19, true, "SeaShell", false);
+  circle(x, y, CANVAS.width / 19, true, "SeaShell", false);
 
   //nose:
-  circle(x, y - canvas.height / 48, canvas.width / 360, true, "pink", false);
+  circle(x, y - CANVAS.height / 48, CANVAS.width / 360, true, "pink", false);
 
   //uus:
-  ctxOTHER.strokeStyle = "black";
-  ctxOTHER.beginPath();
-  ctxOTHER.arc(
-    x - canvas.width / 60,
-    y - canvas.width / 60,
-    canvas.width / 140,
+  CTX_OTHER.strokeStyle = "black";
+  CTX_OTHER.beginPath();
+  CTX_OTHER.arc(
+    x - CANVAS.width / 60,
+    y - CANVAS.width / 60,
+    CANVAS.width / 140,
     0,
     Math.PI,
     true
   );
-  ctxOTHER.moveTo(x + canvas.width / 40, y - canvas.width / 60);
-  ctxOTHER.arc(
-    x + canvas.width / 60,
-    y - canvas.width / 60,
-    canvas.width / 140,
+  CTX_OTHER.moveTo(x + CANVAS.width / 40, y - CANVAS.width / 60);
+  CTX_OTHER.arc(
+    x + CANVAS.width / 60,
+    y - CANVAS.width / 60,
+    CANVAS.width / 140,
     0,
     Math.PI,
     true
   );
-  ctxOTHER.stroke();
+  CTX_OTHER.stroke();
 
   //black spot:
-  ctxOTHER.fillStyle = "black";
-  ctxOTHER.beginPath();
-  ctxOTHER.moveTo(x, y + canvas.width / 19);
-  ctxOTHER.quadraticCurveTo(
-    x + canvas.width / 19,
-    y + canvas.width / 19,
-    x + canvas.width / 19,
+  CTX_OTHER.fillStyle = "black";
+  CTX_OTHER.beginPath();
+  CTX_OTHER.moveTo(x, y + CANVAS.width / 19);
+  CTX_OTHER.quadraticCurveTo(
+    x + CANVAS.width / 19,
+    y + CANVAS.width / 19,
+    x + CANVAS.width / 19,
     y
   );
-  ctxOTHER.fill();
+  CTX_OTHER.fill();
 
   //brown spot:
-  ctxOTHER.fillStyle = "#d98238";
-  ctxOTHER.beginPath();
-  ctxOTHER.moveTo(x, y - canvas.width / 19);
-  ctxOTHER.quadraticCurveTo(
-    x - canvas.width / 19,
-    y - canvas.width / 19,
-    x - canvas.width / 19,
+  CTX_OTHER.fillStyle = "#d98238";
+  CTX_OTHER.beginPath();
+  CTX_OTHER.moveTo(x, y - CANVAS.width / 19);
+  CTX_OTHER.quadraticCurveTo(
+    x - CANVAS.width / 19,
+    y - CANVAS.width / 19,
+    x - CANVAS.width / 19,
     y
   );
-  ctxOTHER.fill();
+  CTX_OTHER.fill();
 
   //urs:
-  ctxOTHER.fillStyle = "#d98238";
-  ctxOTHER.beginPath();
-  ctxOTHER.moveTo(x - canvas.width / 19, y - canvas.width / 76);
-  ctxOTHER.lineTo(x - canvas.width / 19, y - canvas.width / 23.75);
-  ctxOTHER.lineTo(x - canvas.width / 76, y - canvas.width / 23.75);
-  ctxOTHER.fill();
+  CTX_OTHER.fillStyle = "#d98238";
+  CTX_OTHER.beginPath();
+  CTX_OTHER.moveTo(x - CANVAS.width / 19, y - CANVAS.width / 76);
+  CTX_OTHER.lineTo(x - CANVAS.width / 19, y - CANVAS.width / 23.75);
+  CTX_OTHER.lineTo(x - CANVAS.width / 76, y - CANVAS.width / 23.75);
+  CTX_OTHER.fill();
 
-  ctxOTHER.fillStyle = "black";
-  ctxOTHER.beginPath();
-  ctxOTHER.moveTo(x + canvas.width / 40, y - canvas.width / 60);
-  ctxOTHER.lineTo(
-    x + canvas.width / 40 + canvas.width / 120,
-    canvas.width / 120
+  CTX_OTHER.fillStyle = "black";
+  CTX_OTHER.beginPath();
+  CTX_OTHER.moveTo(x + CANVAS.width / 40, y - CANVAS.width / 60);
+  CTX_OTHER.lineTo(
+    x + CANVAS.width / 40 + CANVAS.width / 120,
+    CANVAS.width / 120
   );
-  ctxOTHER.fill();
+  CTX_OTHER.fill();
 };
-
-//poggggggggggggggggggggggggg:
+//check
 var drawPog = function (x, y) {
-  circle(x, y, canvas.width / 19, true, "black", false);
+  circle(x, y, CANVAS.width / 19, true, "black", false);
 };
-
-//info stuff:
+//check
 var drawInfo = function () {
   document.getElementById("level").textContent = "Level: " + level;
 };
-
-//collide test:
 var testCollide = function () {
   //for edge:
   if (x <= 0) {
     x = 0;
   }
-  if (x >= canvas.width) {
-    x = canvas.width;
+  if (x >= CANVAS.width) {
+    x = CANVAS.width;
   }
   if (y <= 0) {
     y = 0;
   }
-  if (y >= canvas.height) {
-    y = canvas.height;
+  if (y >= CANVAS.height) {
+    y = CANVAS.height;
   }
 
   //for maze borders:
   var uumBoxWidth = 248;
   var uumBoxHeight = 204;
 
-  var mazeData = ctx.getImageData(
+  var mazeData = CTX.getImageData(
     x - uumBoxWidth / 2,
     y - uumBoxHeight / 2,
     uumBoxWidth,
     uumBoxHeight
   ).data;
-  var uumData = ctxOTHER.getImageData(
+  var uumData = CTX_OTHER.getImageData(
     x - uumBoxWidth / 2,
     y - uumBoxHeight / 2,
     uumBoxWidth,
@@ -405,7 +656,7 @@ var testCollide = function () {
   ).data;
 
   for (var pix = 0; pix < uumBoxWidth * uumBoxHeight; pix++) {
-    var isInUum = uumData[4 * pix + 3] > 0; // alpha of Uum canvas is > 0;
+    var isInUum = uumData[4 * pix + 3] > 0; // alpha of Uum CANVAS is > 0;
     if (
       isInUum &&
       !(
@@ -415,148 +666,141 @@ var testCollide = function () {
       )
     ) {
       level = 1;
-      x = canvas.width / 2;
-      y = canvas.height / 2 + canvas.height / 2 / 2;
+      x = CANVAS.width / 2;
+      y = CANVAS.height / 2 + CANVAS.height / 2 / 2;
       speed = 5;
     }
   }
 };
-
-//draw win function:
+//check
 var drawWin = function () {
   document.getElementById("win").textContent = "You Win!";
   document.getElementById("uum").src = "images/uum.png";
   document.getElementById("uum").height = 200;
   document.getElementById("uum").width = 250;
 };
-
-//something for level 5:
-var Ball = function () {
-  this.x = 100;
-  this.y = 100;
-  this.xSpeed = -16;
-  this.ySpeed = 24;
-};
-
-Ball.prototype.draw = function () {
-  //circle(this.x, this.y, 50, true, 'purple', 'black');
-  ctx.fillStyle = "purple";
-  ctx.beginPath();
-  ctx.arc(this.x, this.y, 40, 0, Math.PI * 2, false);
-  ctx.fill();
-};
-
-Ball.prototype.move = function () {
-  this.x += this.xSpeed;
-  this.y += this.ySpeed;
-};
-
-Ball.prototype.checkCollision = function () {
-  if (this.x < 0 || this.x > canvas.width) {
-    this.xSpeed = -this.xSpeed;
+class Ball {
+  constructor() {
+    this.x = 100;
+    this.y = 100;
+    this.xSpeed = -16;
+    this.ySpeed = 24;
   }
-  if (this.y < 0 || this.y > canvas.height) {
-    this.ySpeed = -this.ySpeed;
+  draw() {
+    //circle(this.x, this.y, 50, true, 'purple', 'black');
+    CTX.fillStyle = "purple";
+    CTX.beginPath();
+    CTX.arc(this.x, this.y, 40, 0, Math.PI * 2, false);
+    CTX.fill();
   }
-};
-
+  move() {
+    this.x += this.xSpeed;
+    this.y += this.ySpeed;
+  }
+  checkCollision() {
+    if (this.x < 0 || this.x > CANVAS.width) {
+      this.xSpeed = -this.xSpeed;
+    }
+    if (this.y < 0 || this.y > CANVAS.height) {
+      this.ySpeed = -this.ySpeed;
+    }
+  }
+}
 var ball = new Ball();
-
-//draw maze borders:
 var drawMazeBorders = function () {
   //for level 1:
-  ctx.fillStyle = "blue";
+  CTX.fillStyle = "blue";
   if (level == 1) {
-    ctx.fillRect(
-      canvas.width / 2 / 2,
-      canvas.height / 2 - canvas.height / 2 / 2,
+    CTX.fillRect(
+      CANVAS.width / 2 / 2,
+      CANVAS.height / 2 - CANVAS.height / 2 / 2,
       mazeWidth(),
-      canvas.height / 2 + canvas.height / 2 / 2
+      CANVAS.height / 2 + CANVAS.height / 2 / 2
     );
 
-    ctx.fillRect(canvas.width / 2, 0, mazeWidth(), canvas.height / 2);
-    ctx.fillRect(0, 0, (canvas.width / 4) * 2 + 5, mazeWidth());
-    ctx.fillRect(0, 0, mazeWidth(), canvas.height / 2);
-    ctx.fillRect(
-      canvas.width / 2,
-      (canvas.height / 2 / 2 / 2) * 7.5,
-      canvas.width,
-      canvas.height
+    CTX.fillRect(CANVAS.width / 2, 0, mazeWidth(), CANVAS.height / 2);
+    CTX.fillRect(0, 0, (CANVAS.width / 4) * 2 + 5, mazeWidth());
+    CTX.fillRect(0, 0, mazeWidth(), CANVAS.height / 2);
+    CTX.fillRect(
+      CANVAS.width / 2,
+      (CANVAS.height / 2 / 2 / 2) * 7.5,
+      CANVAS.width,
+      CANVAS.height
     );
-    ctx.fillRect(
-      (canvas.width / 2 / 2 / 2) * 7.5,
+    CTX.fillRect(
+      (CANVAS.width / 2 / 2 / 2) * 7.5,
       0,
-      canvas.width,
-      canvas.height
+      CANVAS.width,
+      CANVAS.height
     );
   }
 
   //for level 2:
-  ctx.fillStyle = "green";
+  CTX.fillStyle = "green";
   if (level == 2) {
-    ctx.fillRect(
-      canvas.width / 2 / 2,
-      canvas.height / 2,
+    CTX.fillRect(
+      CANVAS.width / 2 / 2,
+      CANVAS.height / 2,
       mazeWidth(),
-      canvas.height / 2 + canvas.height / 2 / 2
+      CANVAS.height / 2 + CANVAS.height / 2 / 2
     );
-    ctx.fillRect(
-      canvas.width / 2 + canvas.width / 2 / 2,
-      canvas.height / 2,
+    CTX.fillRect(
+      CANVAS.width / 2 + CANVAS.width / 2 / 2,
+      CANVAS.height / 2,
       mazeWidth(),
-      canvas.height
+      CANVAS.height
     );
-    ctx.fillRect(0, canvas.height / 2, canvas.width / 4 + 5, mazeWidth());
-    ctx.fillRect(
-      canvas.width / 2 + canvas.width / 2 / 2 / 2,
-      canvas.height / 2,
-      canvas.width / 2,
+    CTX.fillRect(0, CANVAS.height / 2, CANVAS.width / 4 + 5, mazeWidth());
+    CTX.fillRect(
+      CANVAS.width / 2 + CANVAS.width / 2 / 2 / 2,
+      CANVAS.height / 2,
+      CANVAS.width / 2,
       mazeWidth()
     );
-    ctx.fillRect(0, 0, mazeWidth(), canvas.height / 2);
-    ctx.fillRect(canvas.width - mazeWidth(), 0, mazeWidth(), canvas.height / 2);
-    ctx.fillRect(mazeWidth() * 4, 0, canvas.width, mazeWidth());
+    CTX.fillRect(0, 0, mazeWidth(), CANVAS.height / 2);
+    CTX.fillRect(CANVAS.width - mazeWidth(), 0, mazeWidth(), CANVAS.height / 2);
+    CTX.fillRect(mazeWidth() * 4, 0, CANVAS.width, mazeWidth());
   }
 
   //for level 3:
-  ctx.fillStyle = "red";
+  CTX.fillStyle = "red";
   if (level == 3) {
-    ctx.fillRect(
-      canvas.width / 2 / 2,
-      (canvas.height / 2) * 1.4,
-      canvas.width,
+    CTX.fillRect(
+      CANVAS.width / 2 / 2,
+      (CANVAS.height / 2) * 1.4,
+      CANVAS.width,
       mazeWidth()
     );
-    ctx.fillRect(
+    CTX.fillRect(
       0,
-      canvas.height / 2 - canvas.height / 2 / 2,
-      canvas.width / 2 + canvas.width / 2 / 2,
+      CANVAS.height / 2 - CANVAS.height / 2 / 2,
+      CANVAS.width / 2 + CANVAS.width / 2 / 2,
       mazeWidth()
     );
   }
 
   //for level 4:
-  ctx.fillStyle = "orange";
+  CTX.fillStyle = "orange";
   if (level == 4) {
     //draw:
-    ctx.fillRect(finnalX, canvas.height / 2, canvas.width / 2 / 2, mazeWidth());
-    ctx.fillRect(
+    CTX.fillRect(finnalX, CANVAS.height / 2, CANVAS.width / 2 / 2, mazeWidth());
+    CTX.fillRect(
       finnalXOther,
-      canvas.height / 2 - canvas.height / 2 / 2,
-      canvas.width / 2 / 2,
+      CANVAS.height / 2 - CANVAS.height / 2 / 2,
+      CANVAS.width / 2 / 2,
       mazeWidth()
     );
 
     //move:
-    if (finnalX < canvas.width) finnalX += 5;
+    if (finnalX < CANVAS.width) finnalX += 5;
     else finnalX = 0;
 
     if (finnalXOther > 0) finnalXOther -= 5;
-    else finnalXOther = canvas.width;
+    else finnalXOther = CANVAS.width;
   }
 
   //for level 5:
-  ctx.fillStyle = "purple";
+  CTX.fillStyle = "purple";
   if (level == 5) {
     ball.draw();
     ball.move();
@@ -564,60 +808,59 @@ var drawMazeBorders = function () {
   }
 
   //for level 6:
-  ctx.fillStyle = "green";
+  CTX.fillStyle = "green";
   if (level == 6) {
-    ctx.fillRect(
+    CTX.fillRect(
       0,
-      canvas.height / 2 + canvas.height / 2 / 2 / 2,
-      canvas.width / 2 / 2,
-      canvas.height
+      CANVAS.height / 2 + CANVAS.height / 2 / 2 / 2,
+      CANVAS.width / 2 / 2,
+      CANVAS.height
     );
-    ctx.fillRect(0, 0, canvas.width, mazeWidth());
-    ctx.fillRect(canvas.width / 2, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "yellow";
-    ctx.fillRect(
-      canvas.width / 2 - 5,
-      canvas.height / 4,
-      canvas.width,
-      canvas.height / 4
+    CTX.fillRect(0, 0, CANVAS.width, mazeWidth());
+    CTX.fillRect(CANVAS.width / 2, 0, CANVAS.width, CANVAS.height);
+    CTX.fillStyle = "yellow";
+    CTX.fillRect(
+      CANVAS.width / 2 - 5,
+      CANVAS.height / 4,
+      CANVAS.width,
+      CANVAS.height / 4
     );
-    ctx.fillRect(
-      canvas.width / 2 + canvas.width / 2 / 2,
+    CTX.fillRect(
+      CANVAS.width / 2 + CANVAS.width / 2 / 2,
       0,
-      canvas.width,
-      canvas.height
+      CANVAS.width,
+      CANVAS.height
     );
   }
 
   //for level 7:
-  ctx.fillStyle = "blue";
+  CTX.fillStyle = "blue";
   if (level == 7) {
-    ctx.fillRect(
-      canvas.width / 2,
-      canvas.height / 2 + canvas.height / 8,
-      canvas.width,
+    CTX.fillRect(
+      CANVAS.width / 2,
+      CANVAS.height / 2 + CANVAS.height / 8,
+      CANVAS.width,
       mazeWidth() * 2
     );
-    ctx.fillRect(0, 0, canvas.width, mazeWidth() * 2);
-    ctx.fillRect(0, 0, mazeWidth() * 2, canvas.height);
+    CTX.fillRect(0, 0, CANVAS.width, mazeWidth() * 2);
+    CTX.fillRect(0, 0, mazeWidth() * 2, CANVAS.height);
   }
 };
-
-//test Level function:
+//check
 var testLevel = function () {
   if (y <= 0 && level != (6 || 7)) {
     level++;
-    y = canvas.height;
+    y = CANVAS.height;
   }
 
   if (level == 6 && x <= 0) {
     level++;
-    x = canvas.width;
+    x = CANVAS.width;
   }
 
-  if (level == 7 && y >= canvas.height) {
+  if (level == 7 && y >= CANVAS.height) {
     level++;
-    y = canvas.height;
+    y = CANVAS.height;
   }
 
   if (level == 8) {
@@ -626,19 +869,17 @@ var testLevel = function () {
     drawWin();
   }
 };
-
-//debug:
+//check
 var debug = function () {
   if (showDebug) {
     document.getElementById("moreInfo").textContent =
       `XY= ${x}, ${y}\nspeed=${speed}\nimg: ` +
-      ctx.getImageData(x, y, 1, 1).data.join(", ");
+      CTX.getImageData(x, y, 1, 1).data.join(", ");
   } else {
     document.getElementById("moreInfo").textContent = "";
   }
 };
-
-//draw stuv:
+//check
 var drawStuv = function () {
   if (stuv == "uum") {
     drawUum(x, y);
@@ -656,8 +897,6 @@ var drawStuv = function () {
     drawPog(x, y);
   }
 };
-
-//event handeler stuff:
 var sendKeyDown = function (event) {
   var code = event.code;
   if (code == left) {
@@ -688,26 +927,15 @@ var sendKeyDown = function (event) {
     showDebug = !showDebug; //togle debug
   }
 };
-
 var sendKeyUp = function (event) {
   var code = event.code;
   if (code == right || code == left || code == up || code == down) speed = 1;
 };
 document.addEventListener("keydown", sendKeyDown);
 document.addEventListener("keyup", sendKeyUp);
-
 //main loop:
-var mainLoop = setInterval(function () {
-  if (controls == "mobile") {
-    var mobileControls = $(".mobileControls");
-    var topPog = canvas.height - canvas.width / 7;
-    var leftPog = canvas.width - canvas.width / 7;
-
-    mobileControls.css({
-      top: topPog,
-      left: leftPog
-    });
-  }
+//check
+var mainLoop = setInterval( () => {
 
   if (level == 4 && stuv != "pog") {
     speed = 7;
@@ -715,10 +943,10 @@ var mainLoop = setInterval(function () {
     speed = 13;
   }
 
-  canvas.height = window.innerHeight;
-  canvas.width = window.innerWidth;
-  canvasOTHER.height = window.innerHeight;
-  canvasOTHER.width = window.innerWidth;
+  CANVAS.height = window.innerHeight;
+  CANVAS.width = window.innerWidth;
+  CANVAS_OTHER.height = window.innerHeight;
+  CANVAS_OTHER.width = window.innerWidth;
 
   drawBackground();
   drawMazeBorders();
