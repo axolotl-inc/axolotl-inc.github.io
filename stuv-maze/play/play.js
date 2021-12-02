@@ -34,7 +34,6 @@ var touchY = 0;
 var touchDirX = 0;
 var touchDirY = 0;
 
-
 //check
 var circle = function (x, y, radius, isFilled, fillColor, outlineColor) {
   CTX_OTHER.strokeStyle = outlineColor;
@@ -301,6 +300,8 @@ var drawCod = function (x, y) {
   );
   CTX_OTHER.stroke();
 
+
+
   //black spot:
   CTX_OTHER.fillStyle = "black";
   CTX_OTHER.beginPath();
@@ -336,11 +337,14 @@ var drawCod = function (x, y) {
   CTX_OTHER.fillStyle = "black";
   CTX_OTHER.beginPath();
   CTX_OTHER.moveTo(x + CANVAS.width / 40, y - CANVAS.width / 60);
-  CTX_OTHER.lineTo(
-    x + CANVAS.width / 40 + CANVAS.width / 120,
-    CANVAS.width / 120
-  );
+  CTX_OTHER.lineTo(x + CANVAS.width / 40, y + CANVAS.width / 120, y - CANVAS.width / 120);
+  CTX_OTHER.lineTo(x + CANVAS.width / 76, y - CANVAS.width / 23.75);
   CTX_OTHER.fill();
+
+
+  //CTX_OTHER.strokeStyle = "black";
+  //CTX_OTHER.beginPath();
+  //CTX.moveTo
 };
 //check
 var drawPog = function (x, y) {

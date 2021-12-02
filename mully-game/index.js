@@ -102,6 +102,49 @@ try {
   alert(e);
 }
 
+var yaw;
+var pitch;
+const worldUp = new THREE.Vector3(0, 1, 0);
+var up = new THREE.Vector3();
+var front = new THREE.Vector3();
+var right = new THREE.Vector3();
+const mouseSensitivety = 0.0035;
+
+function toRad(degrees)
+{
+  var pi = Math.PI;
+  return degrees * (pi/180);
+}
+
+function handleMouse(offsetX, offsetY) {
+  yaw = offsetX * mouseSensitivety;
+  pitch = offsetY * mouseSensitivety;
+
+  if (pitch > 89) {
+    pitch = 89;
+  }
+  if (pitch < -89) {
+    pitch = -89;
+  }
+  if (yaw > 360) {
+    yaw = 0;
+  }
+  if (yaw < 0) {
+    yaw = 360;
+  } 
+}
+
+function evaluateVectorsAndStuff() {
+  
+  front.x = Math.cos(toRad(yaw)) * Math.cos(toRad(pitch));
+  front.y = Math.sin(toRad(pitch));
+  front.z = Math.sin(toRad(yaw)) * Math.cos(toRad(pitch));
+
+  front.normalize();
+  right.crossVectors(front, worldUp).normalize();
+  up.crossVectors(right, front).normalize();
+}
+
 function sendKeyDown(event) {
   var c = event.code;
   if (c == "KeyA") mully.position.x = mully.position.x - 10;
@@ -134,6 +177,11 @@ function sendKeyDown(event) {
   }
 }
 document.addEventListener("keydown", sendKeyDown);
+document.addEventListener("mousemove", e => {
+  handleMouse(e.offsetX, e.offsetY);
+  console.log("yaw:" + yaw + " - - - - pitch:" + pitch);
+  mully.rotation.set(pitch, yaw, 0);
+});
 var flip = false;
 
 // Start Animation

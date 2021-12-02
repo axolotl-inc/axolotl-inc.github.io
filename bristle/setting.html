@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Settings</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+  </head>
+
+  <body>
+    <button id="BACKbtn" onclick="document.location='index.html'">
+      « back
+    </button>
+    <div class="main">
+      <div id="title">Settings</div>
+      <br />
+      <div>Skin Color</div>
+      <select name="skin-color" id="skin-color">
+        <option value="blue">Blue</option>
+        <option value="red">Red</option>
+        <option value="green">Green</option>
+        <option value="orange">Orange</option>
+        <option value="pink">Pink</option>
+      </select>
+      <br />
+      <div>Controls:</div>
+      <select id="controls">
+        <option value="wasd">WASD</option>
+        <option value="arrow">Arrow keys</option>
+        <option value="mobile">Mobile [OUT OF ORDER]</option>
+      </select>
+    </div>
+
+    <script>
+      var skinColor = document.getElementById("skin-color").value;
+      var controls = document.getElementById("controls").value;
+
+      setInterval(function () {
+        skinColor = document.getElementById("skin-color").value;
+        controls = document.getElementById("controls").value;
+        localStorage.setItem("skin-color", skinColor);
+        localStorage.setItem("controls", controls);
+      }, 10);
+    </script>
+  </body>
+</html>

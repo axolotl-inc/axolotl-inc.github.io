@@ -6,8 +6,24 @@ body {
   text-align: center;
   margin: 5px;
   border: 6px solid gray;
-  float: left;
+  /* float: left; */
+  /* display: flex; */
+  margin: auto;
+
 }
+
+.games-container {
+  /* flex-direction: column; */
+  /* flex-wrap: wrap; */
+  display: flex;
+  align-items: top;
+  justify-content: space-around;
+  align-self: flex-end;
+
+  /* flex: 200px; */
+  
+}
+
 .games:hover {
   font-size: 30px;
 }
