@@ -25,7 +25,18 @@
             <br />
             <br />
             <div class="text">Created by <a href="../index.html">Axolotl Inc</a></div>
-          </div>
+        </div>
+
+        <script>
+            let localStorageSet = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                localStorageSet.push(localStorage.key(i));
+            }
+            if (!localStorageSet.includes('BRISTLE_controls')) {
+                localStorage.setItem('BRISTLE_controls', 'wasd');
+                localStorage.setItem('BRISTLE_skin-color', 'blue');
+            }
+        </script>
 
     </body>
 

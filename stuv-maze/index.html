@@ -26,5 +26,16 @@
       <br />
       <div class="text">Created by <a href="../index.html">Axolotl Inc</a></div>
     </div>
+
+    <script>
+      let localStorageSet = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            localStorageSet.push(localStorage.key(i));
+        }
+        if (!localStorageSet.includes('STUVMAZE_controls')) {
+            localStorage.setItem('STUVMAZE_controls', 'wasd');
+            localStorage.setItem('STUVMAZE_stuv', 'uum');
+        }
+    </script>
   </body>
 </html>

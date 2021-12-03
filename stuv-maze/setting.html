@@ -14,7 +14,7 @@
       <div id="title">Settings</div>
       <br />
       <div>Stuv:</div>
-      <select name="stuv" id="stuv">
+      <select id="STUVMAZE_stuv">
         <option value="uum">Pum</option>
         <option value="ill">Mully</option>
         <option value="cod">Cwoody</option>
@@ -23,7 +23,7 @@
       </select>
       <br />
       <div>Controls:</div>
-      <select id="controls">
+      <select id="STUVMAZE_controls">
         <option value="wasd">WASD</option>
         <option value="arrow">Arrow keys</option>
         <option value="mobile">Mobile [OUT OF ORDER]</option>
@@ -31,14 +31,14 @@
     </div>
 
     <script>
-      var stuv = document.getElementById("stuv").value;
-      var controls = document.getElementById("controls").value;
+      var stuv = document.getElementById("STUVMAZE_stuv").value;
+      var controls = document.getElementById("STUVMAZE_controls").value;
 
       setInterval(function () {
-        stuv = document.getElementById("stuv").value;
-        controls = document.getElementById("controls").value;
-        localStorage.setItem("stuv", stuv);
-        localStorage.setItem("controls", controls);
+        stuv = document.getElementById("STUVMAZE_stuv").value;
+        controls = document.getElementById("STUVMAZE_controls").value;
+        localStorage.setItem("STUVMAZE_stuv", stuv);
+        localStorage.setItem("STUVMAZE_controls", controls);
       }, 10);
     </script>
   </body>

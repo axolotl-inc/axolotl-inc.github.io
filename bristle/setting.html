@@ -14,7 +14,7 @@
       <div id="title">Settings</div>
       <br />
       <div>Skin Color</div>
-      <select name="skin-color" id="skin-color">
+      <select id="BRISTLE_skin-color">
         <option value="blue">Blue</option>
         <option value="red">Red</option>
         <option value="green">Green</option>
@@ -23,7 +23,7 @@
       </select>
       <br />
       <div>Controls:</div>
-      <select id="controls">
+      <select id="BRISTLE_controls">
         <option value="wasd">WASD</option>
         <option value="arrow">Arrow keys</option>
         <option value="mobile">Mobile [OUT OF ORDER]</option>
@@ -31,14 +31,14 @@
     </div>
 
     <script>
-      var skinColor = document.getElementById("skin-color").value;
-      var controls = document.getElementById("controls").value;
+      var skinColor = document.getElementById("BRISTLE_skin-color").value;
+      var controls = document.getElementById("BRISTLE_controls").value;
 
       setInterval(function () {
-        skinColor = document.getElementById("skin-color").value;
-        controls = document.getElementById("controls").value;
-        localStorage.setItem("skin-color", skinColor);
-        localStorage.setItem("controls", controls);
+        skinColor = document.getElementById("BRISTLE_skin-color").value;
+        controls = document.getElementById("BRISTLE_controls").value;
+        localStorage.setItem("BRISTLE_skin-color", skinColor);
+        localStorage.setItem("BRISTLE_controls", controls);
       }, 10);
     </script>
   </body>

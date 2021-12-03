@@ -1,7 +1,7 @@
 class Game {
     constructor() {
-        this.skinColor = localStorage.getItem("skin-color");
-        this.controls = localStorage.getItem("controls");
+        this.skinColor = localStorage.getItem("BRISTLE_skin-color");
+        this.controls = localStorage.getItem("BRISTLE_controls");
         this.CANVAS = document.getElementById("CANVAS");
         this.CTX = CANVAS.getContext("2d");
         this.up;
