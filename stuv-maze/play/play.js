@@ -243,7 +243,7 @@ class Player {
     }
   }
   testLevel() {
-    if (this.y <= 0 && lthis.game.level != (6 || 7)) {
+    if (this.y <= 0 && this.game.level != (6 || 7)) {
       this.game.level++;
       this.y = this.game.CANVAS.height;
     }
@@ -318,6 +318,12 @@ class Player {
 class Walls {
   constructor(Game) {
     this.game = Game;
+    this.lvl4X = this.game.CANVAS.width / 2;
+    this.lvl4XOther = this.game.CANVAS.width / 2;
+    this.lvl5X = 100;
+    this.lvl5Y = 100;
+    this.lvl5XSpeed = -16;
+    this.lvl5YSpeed = 24;
     
   }
   mazeWidth() {
@@ -348,25 +354,16 @@ class Walls {
     this.game.CTX.fillRect(0, this.game.CANVAS.height / 2 - CANVAS.height / 2 / 2, this.game.CANVAS.width / 2 + CANVAS.width / 2 / 2, this.mazeWidth());
   }
   lvl4() {
-    this.lvl4X = this.game.CANVAS.width / 2;
-    this.lvl4XOther = this.game.CANVAS.width / 2;
     this.game.CTX.fillStyle = "orange";
     this.game.CTX.fillRect(this.lvl4X, this.game.CANVAS.height / 2, this.game.CANVAS.width / 4, this.mazeWidth());
-    this.game.CTX.fillRect(this.game.lvl4XOther, this.game.CANVAS.height / 2 - CANVAS.height / 4, this.game.CANVAS.width / 4, this.mazeWidth());
+    this.game.CTX.fillRect(this.lvl4XOther, this.game.CANVAS.height / 2 - this.game.CANVAS.height / 4, this.game.CANVAS.width / 4, this.mazeWidth());
     if (this.lvl4X < this.game.CANVAS.width) {this.lvl4X += 5;}
     else {this.lvl4X = 0;}
     if (this.lvl4XOther > 0) {this.lvl4XOther -= 5;}
     else {this.lvl4XOther = this.game.CANVAS.width;}
   }
   lvl5() {
-    this.lvl5X = 100;
-    this.lvl5Y = 100;
-    this.lvl5XSpeed = -16;
-    this.lvl5YSpeed = 24;
-    this.game.CTX.fillStyle = "purple";
-    this.game.CTX.beginPath();
-    this.game.CTX.arc(this.x, this.y, 40, 0, Math.PI * 2, false);
-    this.game.CTX.fill();
+    this.game.circle(this.lvl5X, this.lvl5Y, 40, true, "purple", "purple")
     this.lvl5X += this.lvl5XSpeed;
     this.lvl5Y += this.lvl5YSpeed;
     if (this.lvl5X < 0 || this.lvl5X > this.game.CANVAS.width) {this.lvl5XSpeed = -this.lvl5XSpeed;}
