@@ -22,6 +22,9 @@
             <button onclick="document.location='help.html'">HELP</button>
             <br />
             <br />
+            <div id="highscore" class="text">Your highscore: 0</div>
+            <br />
+            <br />
             <br />
             <br />
             <div class="text">Created by <a href="../index.html">Axolotl Inc</a></div>
@@ -35,7 +38,9 @@
             if (!localStorageSet.includes('BRISTLE_controls')) {
                 localStorage.setItem('BRISTLE_controls', 'wasd');
                 localStorage.setItem('BRISTLE_skin-color', 'blue');
+                localStorage.setItem('BRISTLE_highscore', 0);
             }
+            document.getElementById('highscore').textContent = `Your highscore: ${localStorage.getItem('BRISTLE_highscore')}`;
         </script>
 
     </body>

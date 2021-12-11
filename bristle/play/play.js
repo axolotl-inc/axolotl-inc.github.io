@@ -43,6 +43,8 @@ class Game {
             this.player.draw();
             this.player.debug();
 
+            if (this.points > localStorage.getItem('BRISTLE_highscore')) localStorage.setItem('BRISTLE_highscore', this.points);
+
         }, 30);
     }
 
@@ -70,7 +72,8 @@ class Player {
         this.x = x;
         this.y = y;
         this.game = game;
-        this.pointingDirection=365;
+        this.bristleAABB;
+        this.pointingDirection = 365;
         this.sendKeyDown = this.sendKeyDown.bind(this);
         this.sendKeyUp = this.sendKeyUp.bind(this);
     }
@@ -85,6 +88,7 @@ class Player {
     }
 
     testCollide() {
+        // Border Collision
         if (this.x-30 < 0) {
             this.x = 30;
             this.speed = 0;
@@ -101,35 +105,55 @@ class Player {
             this.y = this.game.CANVAS.height-30;
             this.speed = 0;
         }
+        // Food Collision
+        let x = this.x;
+        let y = this.y;
+        let pts = this.game.points;
+        let foods = this.game.food.foods;
+        let collideX;
+        let collideY;
+        if (this.pointingDirection == 0) this.bristleAABB = {x1: x-20, x2: x+20, y1: y-70-pts, y2: y};
+        if (this.pointingDirection == 90) this.bristleAABB = {x1: x, x2: x+70+pts, y1: y-20, y2: y+20};
+        if (this.pointingDirection == 180) this.bristleAABB = {x1: x-20, x2: x+20, y1: y, y2: y+70+pts};
+        if (this.pointingDirection == 270) this.bristleAABB = {x1: x-70-pts, x2: x, y1: y-20, y2: y};
+        for (let i = 0; i < foods.length; i++) {
+            collideX = foods[i][1] > this.bristleAABB.x1 && foods[i][1] < this.bristleAABB.x2;
+            collideY = foods[i][2] > this.bristleAABB.y1 && foods[i][2] < this.bristleAABB.y2;
+            if (collideX && collideY) {
+                this.game.points++;
+                foods.splice(i, 1);
+            }
+        }
     }
 
     draw() {
         let x = this.x;
         let y = this.y;
+        let pts = this.game.points;
         this.game.CTX.fillStyle = "gray";
         if (this.pointingDirection == 0) {
             this.game.CTX.beginPath();
             this.game.CTX.moveTo(x-20, y);
             this.game.CTX.lineTo(x+20, y);
-            this.game.CTX.lineTo(x, y+70);
+            this.game.CTX.lineTo(x, y-70-pts);
             this.game.CTX.fill();
         } else if (this.pointingDirection == 90) {
             this.game.CTX.beginPath();
             this.game.CTX.moveTo(x, y-20);
             this.game.CTX.lineTo(x, y+20);
-            this.game.CTX.lineTo(x-70, y);
+            this.game.CTX.lineTo(x+70+pts, y);
             this.game.CTX.fill();
         } else if (this.pointingDirection == 180) {
             this.game.CTX.beginPath();
             this.game.CTX.moveTo(x-20, y);
             this.game.CTX.lineTo(x+20, y);
-            this.game.CTX.lineTo(x, y-70);
+            this.game.CTX.lineTo(x, y+70+pts);
             this.game.CTX.fill();
         } else if (this.pointingDirection == 270) {
             this.game.CTX.beginPath();
             this.game.CTX.moveTo(x, y-20);
             this.game.CTX.lineTo(x, y+20);
-            this.game.CTX.lineTo(x+70, y);
+            this.game.CTX.lineTo(x-70-pts, y);
             this.game.CTX.fill();
         }
         this.game.circle(x, y, 30, true, this.game.skinColor, "blue");
@@ -142,28 +166,28 @@ class Player {
             this.x -= this.speed;
             if (this.speed < 20) {
                 this.speed++;
-                this.pointingDirection = 270;
+                this.pointingDirection = 90;
             }
         }
         if (code == this.game.right) {
             this.x += this.speed;
             if (this.speed < 20) {
                 this.speed++;
-                this.pointingDirection = 90;
+                this.pointingDirection = 270;
             }
         }
         if (code == this.game.up) {
             this.y -= this.speed;
             if (this.speed < 20) {
                 this.speed++;
-                this.pointingDirection = 0;
+                this.pointingDirection = 180;
             }
         }
         if (code == this.game.down) {
             this.y += this.speed;
             if (this.speed < 20) {
                 this.speed++;
-                this.pointingDirection = 180;
+                this.pointingDirection = 0;
             }
         }
         if (code == "KeyI") {
