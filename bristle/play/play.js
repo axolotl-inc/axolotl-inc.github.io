@@ -68,11 +68,12 @@ class Game {
 
 class Player {
     constructor(game, x, y) {
-        this.speed = 0;
+        this.speed = 0; 
         this.x = x;
         this.y = y;
         this.game = game;
-        this.bristleAABB;
+        let pts = game.points;
+        this.bristleAABB = {x1: x-20, x2: x+20, y1: y-70-pts, y2: y};
         this.pointingDirection = 365;
         this.sendKeyDown = this.sendKeyDown.bind(this);
         this.sendKeyUp = this.sendKeyUp.bind(this);
@@ -81,7 +82,7 @@ class Player {
     debug() {
         if (this.game.showDebug) {
           document.getElementById("moreInfo").textContent =
-            `XY=${this.x}, ${this.y}\nspeed=${this.speed}\npointingDirection=${this.pointingDirection}`
+            `XY=${this.x}, ${this.y}\nspeed=${this.speed}\npointingDirection=${this.pointingDirection}\nfoodCount=${this.game.food.foods.length}`
         } else {
           document.getElementById("moreInfo").textContent = "";
         }
@@ -114,8 +115,7 @@ class Player {
         let collideY;
         if (this.pointingDirection == 0) this.bristleAABB = {x1: x-20, x2: x+20, y1: y-70-pts, y2: y};
         if (this.pointingDirection == 90) this.bristleAABB = {x1: x, x2: x+70+pts, y1: y-20, y2: y+20};
-        if (this.pointingDirection == 180) this.bristleAABB = {x1: x-20, x2: x+20, y1: y, y2: y+70+pts};
-        if (this.pointingDirection == 270) this.bristleAABB = {x1: x-70-pts, x2: x, y1: y-20, y2: y};
+        if (this.pointingDirection == 180) this.bristleAABB = {x1: x-20, x2: x+20, y1: y, y2: y+70+pts}; 
         for (let i = 0; i < foods.length; i++) {
             collideX = foods[i][1] > this.bristleAABB.x1 && foods[i][1] < this.bristleAABB.x2;
             collideY = foods[i][2] > this.bristleAABB.y1 && foods[i][2] < this.bristleAABB.y2;
